@@ -2,20 +2,39 @@
 
 PHP Client for [xczh/cas-proxy](https://git.xjtuana.com/xczh/cas-proxy)
 
-## Version
+## Version 对应版本
 
-- `meteorlxy/cas-proxy-phpclient`(v1.0) -> `xczh/cas-proxy`(v1.1)
+- `xjtuana/cas-proxy-client-php` v1.0 compatible with `xczh/cas-proxy` v1.1
 
+## Usage 使用方法
 
-## Demo
+- 通过Composer引入包（需要配置[Private Packagist](https://packagist.com/orgs/xjtuana)）
 
-```
-git clone https://git.xjtuana.com/meteorlxy/cas-proxy-phpclient.git
-cd cas-proxy-phpclient
-composer install
-php -S demo.php
+```shell
+composer require xjtuana/cas-proxy-client ~1.0
 ```
 
-## Related Work
+- 示例代码
 
-- [meteorlxy/laravel-xjtuana](https://git.xjtuana.com/meteorlxy/laravel-xjtuana)
+```php
+use Xjtuana\Cas\ProxyClient\ClientV1;
+use Xjtuana\Cas\ProxyClient\CasProxyClientException;
+
+$client = new ClientV1([
+    'protocol' => 'https',
+    'hostname' => 'ana.xjtu.edu.cn',
+    'prefix' => '/casproxy',
+]);
+
+try {
+    $user = $client->login();
+} catch(CasProxyClientException $e) {
+    echo $e->getMessage();
+}
+
+echo $user;
+```
+
+## Related Packages 相关包
+
+- [xjtuana/laravel-xjtuana](https://git.xjtuana.com/xjtuana/laravel-xjtuana)
