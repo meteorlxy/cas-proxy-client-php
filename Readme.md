@@ -8,7 +8,7 @@ PHP Client for [xczh/cas-proxy](https://git.xjtuana.com/xczh/cas-proxy)
 
 ## Usage 使用方法
 
-- 通过Composer引入包（需要配置[Private Packagist](https://packagist.com/orgs/xjtuana)）
+- 通过Composer引入包（[Packagist](https://packagist.org/packages/xjtuana/cas-proxy-client)）
 
 ```shell
 composer require xjtuana/cas-proxy-client ~1.0
