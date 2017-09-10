@@ -75,26 +75,26 @@ class ClientV1 extends Client
      */
     public function verify(string $guid) {
         if (empty($guid)) {
-            throw new CasProxyClientException('GUID is required');
+            throw new CasProxyClientException('GUID is required', CasProxyClientException::GUID_INVALID);
         }
         $response = $this->http()->get( $this->getVerifyUrl($guid) );
         
         if ($status = $response->getStatusCode() !== 200) {
-            throw new CasProxyClientException('Response ' . $status . ' from proxy server.');
+            throw new CasProxyClientException($response->getStatusCode() . ': ' . $response->getMessage(), CasProxyClientException::HTTP_EXCEPTION);
         }
 
         $body = json_decode($response->getBody(), true);
         
         if (!isset($body['code']) || !isset($body['message']) || !isset($body['data'])) {
-            throw new CasProxyClientException('Response Invalid');
+            throw new CasProxyClientException('Response Invalid', CasProxyClientException::RESPONSE_INVALID);
         }
         
         if (0 !== $body['code']) {
-            throw new CasProxyClientException('Code: ' . $body['code'] . '. Message: ' . $body['messaage']);
+            throw new CasProxyClientException('Code: ' . $body['code'] . '. Message: ' . $body['messaage'], CasProxyClientException::RESPONSE_EXCEPTION);
         }
         
         if (false === $body['data']['valid']) {
-            throw new CasProxyClientException('GUID Invalid');
+            throw new CasProxyClientException('GUID Invalid', CasProxyClientException::GUID_INVALID);
         }
         
         return $body['data']['userid'];
