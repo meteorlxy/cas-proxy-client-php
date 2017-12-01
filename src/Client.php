@@ -88,10 +88,14 @@ abstract class Client
      * @return string
      */
     protected function getClientUrl() {
-        $protocol = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+        $protocol = isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+            ? $_SERVER['HTTP_X_FORWARDED_PROTO']
+            : isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' 
+            ? 'https' 
+            : 'http';
         $host = $_SERVER['HTTP_HOST'];
         $request_uri = $_SERVER['REQUEST_URI'];
-        return $protocol.$host.$request_uri;
+        return $protocol.'://'.$host.$request_uri;
     }
     
     /**
