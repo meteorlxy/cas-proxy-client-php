@@ -90,22 +90,19 @@ abstract class Client
     protected function getClientUrl() {
         $protocol = isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
             ? $_SERVER['HTTP_X_FORWARDED_PROTO']
-            : $_SERVER['REQUEST_SCHEME'];
+            : isset($_SERVER['REQUEST_SCHEME'])
+              ? $_SERVER['REQUEST_SCHEME']
+              : (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+                ? 'https'
+                : 'http';
             
         $host = $_SERVER['HTTP_HOST'];
-        
-        $port = isset($_SERVER['HTTP_X_FORWARDED_PORT'])
-            ? $_SERVER['HTTP_X_FORWARDED_PORT']
-            : $_SERVER['SERVER_PORT'];
-            
-        $isRegularPort = ($port == 443 && $protocol === 'https') || ($port == 80 && $protocol ==='http');
-        
+
         $request_uri = $_SERVER['REQUEST_URI'];
         
         return $protocol
             . '://'
             . $host
-            . ($isRegularPort ? '' : ':' . $port )
             . $request_uri;
     }
     
